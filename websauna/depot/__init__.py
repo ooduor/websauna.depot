@@ -1,4 +1,5 @@
 """Websauna Depot."""
+from depot.manager import DepotManager
 from pyramid.config import Configurator
 
 from websauna.system import Initializer
@@ -6,6 +7,7 @@ from websauna.system.model.utils import attach_models_to_base_from_module
 from websauna.utils.autoevent import after
 from websauna.utils.autoevent import bind_events
 
+DepotManager.configure('default', {'depot.storage_path': 'files/depot/'})
 
 class AddonInitializer:
     """Configure this addon for websauna.
@@ -50,6 +52,12 @@ class AddonInitializer:
 
         # Run our custom initialization code which does not have a good hook
         self.configure_addon_views()
+        
+    def wrap_wsgi_app(self, app):
+        """Perform any necessary WSGI application wrapping.
+        """
+        app = DepotManager.make_middleware(app, replace_wsgi_filewrapper=True)
+        return app        
 
 
 def includeme(config: Configurator):
