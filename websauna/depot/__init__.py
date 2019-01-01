@@ -7,8 +7,6 @@ from websauna.system.model.utils import attach_models_to_base_from_module
 from websauna.utils.autoevent import after
 from websauna.utils.autoevent import bind_events
 
-DepotManager.configure('default', {'depot.storage_path': 'files/depot/'})
-
 class AddonInitializer:
     """Configure this addon for websauna.
 
